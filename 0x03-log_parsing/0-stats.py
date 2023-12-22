@@ -18,9 +18,9 @@ def parse_line(line):
 
 def print_stats(stats, file_size):
     print(f'File size: {file_size}')
-    for key in sorted(stats.keys()):
-        if stats[key]:
-            print(f'{key}: {stats[key]}')
+    for key, value in sorted(stats.items()):
+        if value:
+            print(f'{key}: {value}')
 
 
 if __name__ == '__main__':
