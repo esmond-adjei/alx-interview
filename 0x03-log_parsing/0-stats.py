@@ -12,7 +12,7 @@ def parse_line(line):
         status_code = data[-2]
         file_size = data[-1]
         return status_code, int(file_size)
-    except KeyError:
+    except BaseException:
         pass
 
 
@@ -38,7 +38,7 @@ if __name__ == '__main__':
                 if SCODE in stats.keys():
                     stats[SCODE] += 1
                 filesize += FSIZE
-            except KeyError:
+            except BaseException:
                 pass
 
             if count % 10 == 0:
