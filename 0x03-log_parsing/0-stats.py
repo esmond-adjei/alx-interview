@@ -34,12 +34,9 @@ if __name__ == '__main__':
             count += 1
             SCODE, FSIZE = parse_line(line)
 
-            try:
-                if SCODE in stats.keys():
-                    stats[SCODE] += 1
-                filesize += FSIZE
-            except BaseException:
-                pass
+            if SCODE in stats.keys():
+                stats[SCODE] += 1
+            filesize += FSIZE
 
             if count % 10 == 0:
                 print_stats(stats, filesize)
