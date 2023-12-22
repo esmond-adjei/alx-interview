@@ -1,28 +1,9 @@
 #!/usr/bin/python3
 """
-Log parsing
+Logs parsing
 """
 
 import sys
-
-
-def parse_line(line):
-    """parses stdin line"""
-    try:
-        data = line.split()
-        status_code = data[-2]
-        file_size = data[-1]
-        return status_code, int(file_size)
-    except BaseException:
-        pass
-
-
-def print_stats(stats, file_size):
-    """prints stats"""
-    print(f'File size: {file_size:d}')
-    for key, value in sorted(stats.items()):
-        if value:
-            print(f'{key}: {value}')
 
 
 if __name__ == '__main__':
@@ -31,14 +12,30 @@ if __name__ == '__main__':
     stats = {'200': 0, '301': 0, '400': 0, '401': 0, '403': 0, '404': 0, '405':
              0, '500': 0}
 
+    def print_stats(stats: dict, file_size: int) -> None:
+        print('File size: {:d}'.format(file_size))
+
+        for key, value in sorted(stats.items()):
+            if value:
+                print('{}: {}'.format(key, value))
+
     try:
         for line in sys.stdin:
             count += 1
-            SCODE, FSIZE = parse_line(line)
+            data = line.split()
 
-            if SCODE in stats.keys():
-                stats[SCODE] += 1
-            filesize += FSIZE
+            try:
+                status_code = data[-2]
+
+                if status_code in stats:
+                    stats[status_code] += 1
+            except BaseException:
+                pass
+
+            try:
+                filesize += int(data[-1])
+            except BaseException:
+                pass
 
             if count % 10 == 0:
                 print_stats(stats, filesize)
