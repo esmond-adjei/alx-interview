@@ -1,23 +1,23 @@
 #!/usr/bin/python3
 """
-Log Parsing
+Logs parsing
 """
 
 import sys
 
 
 if __name__ == '__main__':
-    FSIZE = 0
+    filesize = 0
     count = 0
-    STATS = {'200': 0, '301': 0, '400': 0, '401': 0, '403': 0, '404': 0, '405':
-             0, '500': 0 }
+    stats = {'200': 0, '301': 0, '400': 0, '401': 0, '403': 0, '404': 0, '405':
+             0, '500': 0}
 
-    def print_stats(code_stats, file_size):
+    def print_stats(stats: dict, file_size: int) -> None:
         print('File size: {:d}'.format(file_size))
 
-        for key, value in sorted(code_stats.items()):
+        for key, value in sorted(stats.items()):
             if value:
-                print(f'{key}: {value}')
+                print('{}: {}'.format(key, value))
 
     try:
         for line in sys.stdin:
@@ -26,16 +26,21 @@ if __name__ == '__main__':
 
             try:
                 status_code = data[-2]
-                if status_code in STATS:
-                    STATS[status_code] += 1
-                FSIZE += int(data[-1])
+
+                if status_code in stats:
+                    stats[status_code] += 1
+            except BaseException:
+                pass
+
+            try:
+                filesize += int(data[-1])
             except BaseException:
                 pass
 
             if count % 10 == 0:
-                print_stats(STATS, FSIZE)
+                print_stats(stats, filesize)
 
-        print_stats(STATS, FSIZE)
+        print_stats(stats, filesize)
     except KeyboardInterrupt:
-        print_stats(STATS, FSIZE)
+        print_stats(stats, filesize)
         raise

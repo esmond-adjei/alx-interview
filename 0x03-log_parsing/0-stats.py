@@ -19,7 +19,7 @@ def parse_line(line):
 
 def print_stats(stats, file_size):
     """prints stats"""
-    print(f'File size: {file_size}')
+    print(f'File size: {file_size:d}')
     for key, value in sorted(stats.items()):
         if value:
             print(f'{key}: {value}')
