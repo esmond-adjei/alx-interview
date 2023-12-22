@@ -1,41 +1,50 @@
 #!/usr/bin/python3
 """
-Log Parsing
+Log parsing
 """
 
 import sys
 
 
+def parse_line(line):
+    try:
+        data = line.split()
+        status_code = data[-2]
+        file_size = data[-1]
+        return status_code, int(file_size)
+    except KeyError:
+        pass
+
+
+def print_stats(stats, file_size):
+    print(f'File size: {file_size}')
+    for key in sorted(stats.keys()):
+        if stats[key]:
+            print(f'{key}: {stats[key]}')
+
+
 if __name__ == '__main__':
-    FSIZE = 0
+    filesize = 0
     count = 0
-    STATS = {'200': 0, '301': 0, '400': 0, '401': 0, '403': 0, '404': 0, '405':
-             0, '500': 0 }
-
-    def print_stats(code_stats, file_size):
-        print('File size: {:d}'.format(file_size))
-
-        for key, value in sorted(code_stats.items()):
-            if value:
-                print(f'{key}: {value}')
+    stats = {'200': 0, '301': 0, '400': 0, '401': 0, '403': 0, '404': 0, '405':
+             0, '500': 0}
 
     try:
         for line in sys.stdin:
             count += 1
-            data = line.split()
+            SCODE, FSIZE = parse_line(line)
 
             try:
-                status_code = data[-2]
-                if status_code in STATS:
-                    STATS[status_code] += 1
-                FSIZE += int(data[-1])
-            except BaseException:
+                if SCODE in stats.keys():
+                    stats[SCODE] += 1
+                filesize += FSIZE
+            except KeyError:
                 pass
 
             if count % 10 == 0:
-                print_stats(STATS, FSIZE)
+                print_stats(stats, filesize)
 
-        print_stats(STATS, FSIZE)
+        print_stats(stats, filesize)
     except KeyboardInterrupt:
-        print_stats(STATS, FSIZE)
+        print_stats(stats, filesize)
         raise
