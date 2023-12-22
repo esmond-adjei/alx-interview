@@ -7,6 +7,7 @@ import sys
 
 
 def parse_line(line):
+    """parses stdin line"""
     try:
         data = line.split()
         status_code = data[-2]
@@ -17,6 +18,7 @@ def parse_line(line):
 
 
 def print_stats(stats, file_size):
+    """prints stats"""
     print(f'File size: {file_size}')
     for key, value in sorted(stats.items()):
         if value:
@@ -43,5 +45,5 @@ if __name__ == '__main__':
 
         print_stats(stats, filesize)
     except KeyboardInterrupt:
-        #print_stats(stats, filesize)
+        print_stats(stats, filesize)
         raise
