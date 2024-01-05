@@ -3,6 +3,7 @@
 UTF-8 Validation
 """
 
+
 def validUTF8(data):
     """
     data: list of integers representing 1 byte character
