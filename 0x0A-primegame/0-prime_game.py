@@ -18,7 +18,7 @@ def isWinner(x, nums):
     ben_wins = 0
 
     for n in nums:
-        primes_count = sum(1 for num in range(2, n + 1) if is_prime(num))
+        primes_count = sum(1 for num in range(1, n + 1) if is_prime(num))
         if primes_count % 2 == 0:
             ben_wins += 1
         else:
@@ -33,4 +33,4 @@ def isWinner(x, nums):
 
 
 if __name__ == "__main__":
-    print("Winner: {}".format(isWinner(5, [2, 5, 1, 4, 3])))
+    print("Winner: {}".format(isWinner(5, [7, 2, 1, 4, 3])))
