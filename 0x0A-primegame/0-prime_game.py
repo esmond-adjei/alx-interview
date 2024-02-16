@@ -1,57 +1,28 @@
 #!/usr/bin/python3
 """
-Prime Game
+Defines a Prime game
 """
 
 
-def isprime(n):
-    """ Return prime number """
-    for i in range(2, n):
-        if n % i == 0:
-            return False
-    return True
-
-
-def update_nums(n, nums):
-    """ Remove numbers"""
-    for i in range(len(nums)):
-        if nums[i] % n == 0:
-            nums[i] = 0
-
-
 def isWinner(x, nums):
-    """ Return name of player that won
-    most rounds
     """
-    nums.sort()
-    Maria = 0
-    Ben = 0
-    for game in range(x):
-        nums2 = list(range(1, nums[game] + 1))
-        turn = 0
-        while True:
-            """
-            # monitor turns, uncomment to watch
-            if turn % 2 != 0:
-                print("Ben turn ")
-            else:
-                print("Maria turn ")
-            """
-            change = False
-            for i, n in enumerate(nums2):
-                if n > 1 and isprime(n):
-                    update_nums(n, nums2)
-                    change = True
-                    turn += 1
-                    break
-            if change is False:
-                break
-        if turn % 2 != 0:
-            Maria += 1
-        else:
-            Ben += 1
-    if Maria == Ben:
+    Evaluates the winner of a prime game session within x rounds of play
+    """
+    if x < 1 or not nums:
         return None
-    if Maria > Ben:
-        return "Maria"
-    return "Ben"
+    mariasWins, bensWins = 0, 0
+    n = max(nums)
+    primes = [True for _ in range(1, n + 1, 1)]
+    primes[0] = False
+    for i, isPrime in enumerate(primes, 1):
+        if i == 1 or not isPrime:
+            continue
+        for y in range(i + i, n + 1, i):
+            primes[y - 1] = False
+    for _, n in zip(range(x), nums):
+        primesCount = len(list(filter(lambda x: x, primes[0: n])))
+        bensWins += primesCount % 2 == 0
+        mariasWins += primesCount % 2 == 1
+    if mariasWins == bensWins:
+        return None
+    return 'Maria' if mariasWins > bensWins else 'Ben'
